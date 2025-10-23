@@ -2,6 +2,7 @@ import React from 'react'
 import {Routes, Route} from 'react-router-dom'
 import Navbar from './components/Navbar'
 import { Home, Collection, About, Contact, Product, Cart, Login, PlaceOrder, Orders} from './pages/pages.js'
+import Footer from './components/Footer.jsx'
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
           <Route path='/place-order' element={<PlaceOrder/>} />
           <Route path='/orders' element={<Orders/>} />
         </Routes>
+        <Footer/>
       </div>
     </div>
   )
