@@ -3,12 +3,14 @@ import {Routes, Route} from 'react-router-dom'
 import Navbar from './components/Navbar'
 import { Home, Collection, About, Contact, Product, Cart, Login, PlaceOrder, Orders} from './pages/pages.js'
 import Footer from './components/Footer.jsx'
+import SearchBar from './components/SearchBar.jsx'
 
 export default function App() {
   return (
     <div>
       <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
         <Navbar/>
+        <SearchBar/>
         <Routes>
           <Route path='/' element={<Home/>} />
           <Route path='/collection' element={<Collection/>} />
