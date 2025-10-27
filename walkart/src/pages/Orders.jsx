@@ -12,14 +12,14 @@ export default function Orders() {
 
   const loadOrderData = async () => {
     try {
-      if(!token){
+      if (!token) {
         return null;
       }
-    
-      const response = await axios.post(backendUrl+'/api/order/userorders', {}, {headers: {token}});
-      if(response.data.success){
+
+      const response = await axios.post(backendUrl + '/api/order/userorders', {}, { headers: { token } });
+      if (response.data.success) {
         let allOrdersItem = [];
-        response.data.orders.map((order)=> {
+        response.data.orders.map((order) => {
           order.items.map((item) => {
             item['status'] = order.status;
             item['payment'] = order.payment;
@@ -40,7 +40,7 @@ export default function Orders() {
     try {
       loadOrderData();
     } catch (error) {
-      
+
     }
   })
 
@@ -63,7 +63,11 @@ export default function Orders() {
                     <p>Size: {item.size}</p>
                   </div>
                   <p className='mt-1'>Date: <span className='text-gray-400'>{new Date(item.date).toDateString()}</span></p>
-                  <p className='mt-1'>Payment: <span className='text-gray-400'>{item.paymentMethod}</span></p>
+                  <p className="mt-1 flex items-center gap-3">
+                    <span>Payment: <span className="text-gray-400">{item.paymentMethod}</span></span>
+                    <span>•</span>
+                    <span>Payment Status: <span className="text-gray-400">{item.payment ? 'Paid' : 'Failed'}</span></span>
+                  </p>
                 </div>
               </div>
               <div className="md:w-1/2 flex justify-between">

@@ -3,6 +3,8 @@ import Title from '../components/Title'
 import CartTotal from '../components/CartTotal'
 import { assets } from '../assets/assets'
 import { ShopContext } from '../context/ShopContext';
+import { toast } from 'react-toastify'
+import axios from 'axios'
 
 export default function PlaceOrder() {
   const [method, setMethod] = useState('stripe');
@@ -26,7 +28,7 @@ export default function PlaceOrder() {
     setFormData(data => ({...data, [name]: value}));
   }
 
-  const onSubmitHandler = (e) => {
+  const onSubmitHandler = async (e) => {
     e.preventDefault();
     try {
       let orderItems = []
@@ -50,6 +52,13 @@ export default function PlaceOrder() {
       switch (method){
         //API calls for method
         case 'stripe':
+          const responseStripe = await axios.post(backendUrl+'/api/order/stripe', orderData, {headers: {token}});
+          if(responseStripe.data.success){
+            const {session_url} = responseStripe.data;
+            window.location.replace(session_url);
+          }else{
+            toast.error(responseStripe.data.message);
+          }
           break;
         case 'algorand':
           break; 

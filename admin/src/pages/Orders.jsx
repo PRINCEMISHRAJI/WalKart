@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { backendURL } from '../App'
 import { assets } from '../assets/assets'
+import { currency } from '../App'
+import { toast } from 'react-toastify'
 
 export default function Orders({ token }) {
   const [orders, setOrders] = useState([])
@@ -24,6 +26,19 @@ export default function Orders({ token }) {
     }
   }
 
+
+  const statusHandler = async (e, orderId) => {
+    try {
+      const response = await axios.post(backendURL + '/api/order/status', { orderId, status: e.target.value }, { headers: { token } })
+      if (response.data.success) {
+        await fetchAllOrders()
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
+  }
+
   useEffect(() => {
     fetchAllOrders()
   }, [token])
@@ -40,7 +55,7 @@ export default function Orders({ token }) {
 
                 <div>
                   {order.items.map((item, idx) => {
-                    if (index === order.items.length - 1) {
+                    if (idx === order.items.length - 1) {
                       return <p className='py-0.5' key={idx}>{item.name} x {item.quantity} <span> {item.size} </span></p>
                     } else {
                       return <p className='py-0.5' key={idx}>{item.name} x {item.quantity} <span> {item.size} </span>,</p>
@@ -57,11 +72,11 @@ export default function Orders({ token }) {
               <div>
                 <p className='text-sm sm:text-[15px]'>Items: {order.items.length}</p>
                 <p className='mt-3'>Method: {order.paymentMethod}</p>
-                <p>Payment: { order.Payment ? 'Done' : 'Pending' }</p>
-                <p>Date: { new Date(order.Date).toLocaleDateString()}</p>
+                <p>Payment: {order.payment ? 'Done' : 'Pending'}</p>
+                <p>Date: {new Date(order.date).toLocaleDateString()}</p>
               </div>
               <p className='text-sm sm:text-[15px]'>{currency}{order.amount}</p>
-              <select value={order.status} className='p-2 font-semibold'>
+              <select onChange={(e) => statusHandler(e, order._id)} value={order.status} className='p-2 font-semibold'>
                 <option value="Order Placed">Order Placed</option>
                 <option value="Packing">Packing</option>
                 <option value="Shipped">Shipped</option>

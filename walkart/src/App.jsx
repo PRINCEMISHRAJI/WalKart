@@ -5,6 +5,7 @@ import { Home, Collection, About, Contact, Product, Cart, Login, PlaceOrder, Ord
 import Footer from './components/Footer.jsx'
 import SearchBar from './components/SearchBar.jsx'
 import { ToastContainer, toast } from 'react-toastify';
+import Verify from './pages/Verify.jsx'
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
           <Route path='/login' element={<Login/>} />
           <Route path='/place-order' element={<PlaceOrder/>} />
           <Route path='/orders' element={<Orders/>} />
+          <Route path='/verify' element={<Verify/>} />
         </Routes>
         <Footer/>
       </div>
