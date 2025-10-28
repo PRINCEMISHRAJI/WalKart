@@ -5,13 +5,20 @@ import { ShopContext } from '../context/ShopContext';
 
 export default function Navbar() {
     const [visible, setVisible] = useState(false);
-    const { setShowSearch, getCartCount, navigate, token, setToken, setCartItems } = useContext(ShopContext)
+    const { setShowSearch, getCartCount, navigate, token, setToken, setCartItems, connectWallet, isConnecting, walletAddress, setWalletAddress, peraWallet } = useContext(ShopContext)
 
     const logout = () => {
         navigate('/login')
         localStorage.removeItem('token');
         setToken('');
-        setCartItems({})
+        setCartItems({});
+        peraWallet.disconnect();
+        setWalletAddress(null);
+        console.log("Wallet disconnected successfully");
+    }
+
+    const wallet = (walletAddress) => {
+        return walletAddress.slice(0, 7) + '....' + walletAddress.slice(-7);
     }
 
   return (
@@ -56,6 +63,27 @@ export default function Navbar() {
             </Link>
 
             <img onClick={() => setVisible(true)} src={assets.menu_icon} className='w-5 cursor-pointer sm:hidden' alt="" />
+
+            <div className="relative group inline-block">
+      {/* Glowing border */}
+      <div className="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-full blur opacity-75 group-hover:opacity-100 transition duration-300"></div>
+
+      <button
+        onClick={connectWallet}
+        disabled={isConnecting}
+        className={`
+          relative bg-gray-900 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-full text-sm sm:text-base font-semibold
+          transform transition-all duration-150
+          ${isConnecting ? "scale-95 bg-gray-700" : "hover:scale-105"}
+        `}
+      >
+        {isConnecting
+          ? "Connecting..."
+          : walletAddress
+          ? wallet(walletAddress)
+          : "Connect Wallet"}
+      </button>
+    </div>
         </div>
 
         {/*Sidebar menu for small screens */}

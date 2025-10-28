@@ -14,11 +14,19 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    walletAddress: {
+        type: String,
+        required: true
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
     cartData: {
         type: Object,
         default: {}
     }
-}, {minimize: false});
+}, { minimize: false });
 
 const userModel = mongoose.models.user || mongoose.model('user', userSchema);
 

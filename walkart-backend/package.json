@@ -16,6 +16,7 @@
   "author": "Ankit Mishra",
   "license": "ISC",
   "dependencies": {
+    "algosdk": "^2.4.0",
     "bcrypt": "^6.0.0",
     "cloudinary": "^2.8.0",
     "cors": "^2.8.5",
